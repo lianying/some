@@ -20,17 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.taobao.api.VasApi;
 import com.taobao.api.domain.ArticleUserSubscribe;
 import com.taobao.api.internal.util.WebUtils;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.mapper.JsonMapper;
-import com.thinkgem.jeesite.common.utils.PropertiesLoader;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.top.entity.TopUser;
-import com.thinkgem.jeesite.modules.top.service.topapi.VasApi;
 import com.thinkgem.jeesite.modules.top.utils.TopConifg;
 
 /**

@@ -98,6 +98,15 @@
 	<!-- 依赖项定义 -->
 	<dependencies>
 	
+		<!-- taobao sdk -->
+		<dependency>
+            <groupId>com.taobao</groupId>
+            <artifactId>taobaosdknotify</artifactId>
+            <version>2.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/taobaosdknotify.jar</systemPath>
+        </dependency>
+	
 		<!-- SPRING begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>
