@@ -10,6 +10,8 @@ package com.taobao.api;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.taobao.api.domain.ArticleUserSubscribe;
 import com.taobao.api.request.VasSubscribeGetRequest;
 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.taobao.api.ImprovedTaobaoClient;
 import com.taobao.api.VasApi;
 import com.taobao.api.domain.ArticleUserSubscribe;
 import com.taobao.api.internal.util.WebUtils;
@@ -43,11 +44,18 @@ public class TopCallbackController extends BaseController {
 	private SystemService systemService;
 	private VasApi vasApi;
 
+	public TopCallbackController() {
+		ImprovedTaobaoClient client = new ImprovedTaobaoClient(TopConifg.getServerUrl(),
+				TopConifg.getAppKey(), TopConifg.getAppSecret());
+		vasApi = new VasApi(client);
+		systemService = new SystemService();
+	}
+
 	@ResponseBody
 	@RequestMapping(value = "callback")
 	public String callback(@RequestParam("code") String code,
 			HttpServletResponse response) throws IOException {
-		
+
 		// 生成或更新用户
 		User user;
 		try {
@@ -84,7 +92,8 @@ public class TopCallbackController extends BaseController {
 			return null;
 		}
 		// 根据TOP回调的参数给用户赋值
-		TopUser topUser = JsonMapper.getInstance().fromJson(WebUtils.decode(res), TopUser.class);
+		TopUser topUser = JsonMapper.getInstance().fromJson(
+				WebUtils.decode(res), TopUser.class);
 
 		User user = new User();
 		user.setLoginName(topUser.getTaobaoUserNick());
@@ -109,10 +118,4 @@ public class TopCallbackController extends BaseController {
 		return user;
 	}
 
-	public static void main(String[] args) {
-		String str = "{\"w2_expires_in\":86400,\"taobao_user_id\":\"876248007\",\"taobao_user_nick\":\"%E4%B8%AD%E5%9B%BD%E8%81%94%E5%90%88%E9%80%9A%E8%AE%AF%E7%A7%91%E6%8A%80\",\"w1_expires_in\":86400,\"re_expires_in\":86400,\"r2_expires_in\":86400,\"expires_in\":86400,\"token_type\":\"Bearer\",\"refresh_token\":\"620021296093575e8ea8ZZ29600591399a499471ce1e357876248007\",\"access_token\":\"62010123b3c9a35bb9d0ZZ239ddf5207b9180446c65a4c6876248007\",\"r1_expires_in\":86400}";
-		
-		TopUser topUser = JsonMapper.getInstance().fromJson(WebUtils.decode(str), TopUser.class);
-		System.out.println(topUser.toString());
-	}
 }

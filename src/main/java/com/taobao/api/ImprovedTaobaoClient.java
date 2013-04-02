@@ -18,24 +18,24 @@ import com.taobao.api.exception.ReachMaxRetrysException;
  * @author 10060484
  * 
  */
-public class ImprovedTaobaoClient extends DefaultTaobaoClient {
+public class ImprovedTaobaoClient {
 
 	private static Logger log = LoggerFactory
 			.getLogger(ImprovedTaobaoClient.class);
 
 	private static final int MAX_RETRIES = 3;
 
+	private DefaultTaobaoClient defaultTaobaoClient;
+	
 	public ImprovedTaobaoClient(String serverUrl, String appKey,
 			String appSecret) {
-		super(serverUrl, appKey, appSecret);
+		defaultTaobaoClient = new DefaultTaobaoClient(serverUrl, appKey, appSecret);
 	}
 
-	@Override
 	public <T extends TaobaoResponse> T execute(TaobaoRequest<T> request) {
 		return executeInner(request, null, MAX_RETRIES);
 	}
 
-	@Override
 	public <T extends TaobaoResponse> T execute(TaobaoRequest<T> request,
 			String session) {
 		return executeInner(request, session, MAX_RETRIES);
@@ -52,9 +52,9 @@ public class ImprovedTaobaoClient extends DefaultTaobaoClient {
 		T response = null;
 		try {
 			if (session == null) {
-				response = super.execute(request);
+				response = defaultTaobaoClient.execute(request);
 			} else {
-				response = super.execute(request, session);
+				response = defaultTaobaoClient.execute(request, session);
 			}
 		} catch (ApiException e) {
 			if (retries < MAX_RETRIES) {
