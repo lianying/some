@@ -47,14 +47,14 @@ public class ItemApi {
 		taobaoClient.execute(request, session);
 	}
     
-    public List<Item> getOnsaleItems(final String session, int pageNo) {
+    public List<Item> getOnsaleItems(final String session) {
     	ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
 		request.setFields(FULL_INFO_FIELDS);
 
 		return taobaoClient.execute(request, session).getItems();
 	}
     
-    public List<Item> getInventoryItems(final String session, int pageNo) {
+    public List<Item> getInventoryItems(final String session) {
     	ItemsInventoryGetRequest request = new ItemsInventoryGetRequest();
     	request.setFields(FULL_INFO_FIELDS);
     	

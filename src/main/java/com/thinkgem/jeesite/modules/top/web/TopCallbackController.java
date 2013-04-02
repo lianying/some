@@ -43,10 +43,18 @@ public class TopCallbackController extends BaseController {
 	private SystemService systemService;
 	private VasApi vasApi;
 
+	public void login() {
+		SystemService systemService = new SystemService();
+
+		systemService.login("thinkgem", "admin");
+	}
+
 	@ResponseBody
 	@RequestMapping(value = "callback")
 	public String callback(@RequestParam("code") String code,
 			HttpServletResponse response) throws IOException {
+
+		login();
 		
 		// 生成或更新用户
 		User user;
@@ -69,7 +77,8 @@ public class TopCallbackController extends BaseController {
 				TopConifg.getAppKey(), TopConifg.getRedirectUrl());
 	}
 
-	private User getUser(String code, HttpServletResponse response) throws IOException {
+	private User getUser(String code, HttpServletResponse response)
+			throws IOException {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("client_id", TopConifg.getAppKey());
 		params.put("response_type", "code");
@@ -78,33 +87,32 @@ public class TopCallbackController extends BaseController {
 		params.put("code", code);
 		params.put("redirect_uri", TopConifg.getRedirectUrl());
 
-		String res = WebUtils.doPost(TopConifg.getOauthCodeUrl(), params,
-				0, 0);
+		String res = WebUtils.doPost(TopConifg.getOauthCodeUrl(), params, 0, 0);
 
 		if (StringUtils.isBlank(res)) {
 			return null;
 		}
-		//根据TOP回调的参数给用户赋值
+		// 根据TOP回调的参数给用户赋值
 		TopUser topUser = JsonMapper.getInstance().fromJson(res, TopUser.class);
-		
+
 		User user = new User();
 		user.setLoginName(topUser.getTaobaoUserNick());
 		user.setPassword(topUser.getTaobaoUserNick());
 		user.setName(topUser.getTaobaoUserNick());
 		user.setTopUser(topUser);
 
-		//查询用户的版本
-		List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(topUser.getTaobaoUserNick(),
-				TopConifg.getArticleCode());
+		// 查询用户的版本
+		List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(
+				topUser.getTaobaoUserNick(), TopConifg.getArticleCode());
 		for (ArticleUserSubscribe subscribe : vasSubscribe) {
 			subscribe.getItemCode();
 			subscribe.getDeadline();
 		}
-		
-		//保存
+
+		// 保存
 		systemService.saveUser(user);
 
-		//登录
+		// 登录
 		systemService.login(user.getLoginName(), user.getPassword());
 
 		return user;
