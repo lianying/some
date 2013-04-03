@@ -1,16 +1,15 @@
 package com.taobao.api.exception;
 
-/**
- * 连接远程服务超时
- * 
- * @author Simon Leung
- * @since 0.1
- */
-public class RemoteServiceTimeoutException extends TaobaoApiException {
-	private static final long serialVersionUID = 1L;
+public class RemoteServiceTimeoutException extends TaobaoInnerException {
+    public RemoteServiceTimeoutException(String errorCode, String errorMessage) {
+        super(errorCode, errorMessage);
+    }
 
-	public RemoteServiceTimeoutException(String errorCode, String errorMessage,
-			String subErrorCode, String subErrorMessage) {
-		super(errorCode, errorMessage, subErrorCode, subErrorMessage);
-	}
+    public RemoteServiceTimeoutException(Throwable cause) {
+        super(cause);
+    }
+
+    public RemoteServiceTimeoutException(String errorCode, String errorMessage, String subErrorCode, String subErrorMessage) {
+        super(errorCode, errorMessage, subErrorCode, subErrorMessage);
+    }
 }
