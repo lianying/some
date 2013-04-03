@@ -1,5 +1,8 @@
 package com.thinkgem.jeesite.modules.top.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.top.entity.Item;
 import com.thinkgem.jeesite.modules.top.service.ItemService;
 
@@ -35,17 +41,14 @@ public class ItemController extends BaseController {
 		}
 	}
 	
-//	@RequiresPermissions("top:item:view")
-//	@RequestMapping(value = {"list", ""})
-//	public String list(Item item, Model model) {
-//		User user = UserUtils.getUser();
-//		if (!user.isAdmin()){
-//			item.setUser(user);
-//		}
-//        Page<Item> page = itemService.find(new Page<Item>(request, response), item); 
-//        model.addAttribute("page", page);
-//		return "modules/top/itemList";
-//	}
+	@RequiresPermissions("top:item:view")
+	@RequestMapping(value = {"list", ""})
+	public String list(Item item, Model model, HttpServletRequest request, HttpServletResponse response) {
+
+        Page<Item> page = itemService.find(new Page<Item>(request, response), item); 
+        model.addAttribute("page", page);
+		return "modules/top/itemList";
+	}
 
 	@RequiresPermissions("top:item:view")
 	@RequestMapping(value = "form")
