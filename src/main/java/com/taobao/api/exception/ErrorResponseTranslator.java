@@ -13,9 +13,6 @@ import com.google.gson.JsonObject;
  */
 public class ErrorResponseTranslator {
     public static void throwException(JsonObject errorJson) {
-    	
-    	
-    	
         JsonObject error = errorJson.getAsJsonObject("error_response");
         String code = getElementAsString(error, "code");
         String message = getElementAsString(error, "msg");

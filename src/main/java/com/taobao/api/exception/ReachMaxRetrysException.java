@@ -5,12 +5,7 @@ package com.taobao.api.exception;
  * 重试超过最大重试次数时抛出的异常
  */
 public class ReachMaxRetrysException extends TaobaoApiException {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public ReachMaxRetrysException(String errorCode, String errorMessage) {
+    public ReachMaxRetrysException(String errorCode, String errorMessage) {
         super(errorCode, errorMessage);
     }
 

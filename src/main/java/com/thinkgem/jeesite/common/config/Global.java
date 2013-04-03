@@ -34,6 +34,8 @@ public class Global {
 	 */
 	public static final String FRONT_PATH = "/f";
 	
+	public static final String TOP_PATH = "t";
+	
 	/**
 	 * 设置访问URL后缀
 	 */
@@ -60,5 +62,7 @@ public class Global {
 	public static String getUrlSuffix() {
 		return URL_SUFFIX;
 	}
-	
+	public static String getTopPath() {
+		return TOP_PATH;
+	}
 }

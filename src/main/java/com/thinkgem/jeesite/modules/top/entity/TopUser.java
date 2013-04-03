@@ -16,6 +16,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.persistence.BaseEntity;
 
@@ -31,109 +32,20 @@ import com.thinkgem.jeesite.common.persistence.BaseEntity;
 public class TopUser extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
-	
-	private long taobao_user_id;
-	private String taobao_user_nick;
-	private String access_token;
-	private String refresh_toekn;
-	private String token_type;
-	private long expires_in;
-	private long w1_expires_in;
-	private long w2_expires_in;
-	private long r1_expires_in;
-	private long r2_expires_in;
-	private long re_expires_in;
-	
+
+	long taobaoUserId;
+	String taobaoUserNick;
+	String accessToken;
+	String refreshToekn;
+	String tokenType;
+	long expiresIn;
+	long w1ExpiresIn;
+	long w2ExpiresIn;
+	long r1ExpiresIn;
+	long r2ExpiresIn;
+	long reExpiresIn;
+
 	private List<Item> itemList = Lists.newArrayList();
-
-	public long getTaobaoUserId() {
-		return taobao_user_id;
-	}
-
-	public void setTaobaoUserId(long id) {
-		this.taobao_user_id = id;
-	}
-
-	@Id
-	public String getTaobaoUserNick() {
-		return taobao_user_nick;
-	}
-
-	public void setTaobaoUserNick(String nick) {
-		this.taobao_user_nick = nick;
-	}
-
-	public String getAccessToken() {
-		return access_token;
-	}
-
-	public void setAccessToken(String accessToken) {
-		this.access_token = accessToken;
-	}
-
-	public String getRefreshToekn() {
-		return refresh_toekn;
-	}
-
-	public void setRefreshToekn(String refreshToekn) {
-		this.refresh_toekn = refreshToekn;
-	}
-
-	public String getTokenType() {
-		return token_type;
-	}
-
-	public void setTokenType(String tokenType) {
-		this.token_type = tokenType;
-	}
-
-	public long getExpiresIn() {
-		return expires_in;
-	}
-
-	public void setExpiresIn(long expiresIn) {
-		this.expires_in = expiresIn;
-	}
-
-	public long getW1ExpiresIn() {
-		return w1_expires_in;
-	}
-
-	public void setW1ExpiresIn(long w1ExpiresIn) {
-		this.w1_expires_in = w1ExpiresIn;
-	}
-
-	public long getW2ExpiresIn() {
-		return w2_expires_in;
-	}
-
-	public void setW2ExpiresIn(long w2ExpiresIn) {
-		this.w2_expires_in = w2ExpiresIn;
-	}
-
-	public long getR1ExpiresIn() {
-		return r1_expires_in;
-	}
-
-	public void setR1ExpiresIn(long r1ExpiresIn) {
-		this.r1_expires_in = r1ExpiresIn;
-	}
-
-	public long getR2ExpiresIn() {
-		return r2_expires_in;
-	}
-
-	public void setR2ExpiresIn(long r2ExpiresIn) {
-		this.r2_expires_in = r2ExpiresIn;
-	}
-
-	public long getReExpiresIn() {
-		return re_expires_in;
-	}
-
-	public void setReExpiresIn(long reExpiresIn) {
-		this.re_expires_in = reExpiresIn;
-	}
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "nick")
@@ -147,5 +59,105 @@ public class TopUser extends BaseEntity {
 	public void setItemList(List<Item> itemList) {
 		this.itemList = itemList;
 	}
-	
+
+	@JsonProperty("taobao_user_id")
+	public long getTaobaoUserId() {
+		return taobaoUserId;
+	}
+
+	@Id
+	@JsonProperty("taobao_user_nick")
+	public String getTaobaoUserNick() {
+		return taobaoUserNick;
+	}
+
+	@JsonProperty("access_token")
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	@JsonProperty("refresh_token")
+	public String getRefreshToekn() {
+		return refreshToekn;
+	}
+
+	@JsonProperty("token_type")
+	public String getTokenType() {
+		return tokenType;
+	}
+
+	@JsonProperty("expires_in")
+	public long getExpiresIn() {
+		return expiresIn;
+	}
+
+	@JsonProperty("w1_expires_in")
+	public long getW1ExpiresIn() {
+		return w1ExpiresIn;
+	}
+
+	@JsonProperty("w2_expires_in")
+	public long getW2ExpiresIn() {
+		return w2ExpiresIn;
+	}
+
+	@JsonProperty("r1_expires_in")
+	public long getR1ExpiresIn() {
+		return r1ExpiresIn;
+	}
+
+	@JsonProperty("r2_expires_in")
+	public long getR2ExpiresIn() {
+		return r2ExpiresIn;
+	}
+
+	@JsonProperty("re_expires_in")
+	public long getReExpiresIn() {
+		return reExpiresIn;
+	}
+
+	public void setTaobaoUserId(long taobaoUserId) {
+		this.taobaoUserId = taobaoUserId;
+	}
+
+	public void setTaobaoUserNick(String taobaoUserNick) {
+		this.taobaoUserNick = taobaoUserNick;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public void setRefreshToekn(String refreshToekn) {
+		this.refreshToekn = refreshToekn;
+	}
+
+	public void setTokenType(String tokenType) {
+		this.tokenType = tokenType;
+	}
+
+	public void setExpiresIn(long expiresIn) {
+		this.expiresIn = expiresIn;
+	}
+
+	public void setW1ExpiresIn(long w1ExpiresIn) {
+		this.w1ExpiresIn = w1ExpiresIn;
+	}
+
+	public void setW2ExpiresIn(long w2ExpiresIn) {
+		this.w2ExpiresIn = w2ExpiresIn;
+	}
+
+	public void setR1ExpiresIn(long r1ExpiresIn) {
+		this.r1ExpiresIn = r1ExpiresIn;
+	}
+
+	public void setR2ExpiresIn(long r2ExpiresIn) {
+		this.r2ExpiresIn = r2ExpiresIn;
+	}
+
+	public void setReExpiresIn(long reExpiresIn) {
+		this.reExpiresIn = reExpiresIn;
+	}
+
 }

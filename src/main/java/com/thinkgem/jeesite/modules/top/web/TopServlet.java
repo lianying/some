@@ -26,7 +26,6 @@ import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Item;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.taobao.api.response.ItemsOnsaleGetResponse;
-import com.thinkgem.jeesite.common.utils.PropertiesLoader;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.top.service.ItemService;
 
@@ -38,12 +37,6 @@ public class TopServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final PropertiesLoader prop;
-	static {
-		prop = new PropertiesLoader("classpath:/top-config.properties");
-		
-	}
-	
 	private static final String serverUrl = "http://gw.api.taobao.com/router/rest";
 	private static final String appKey = "21056818";
 	private static final String appSecret = "cfeae196784dc0b44889855af3f3b5ca";

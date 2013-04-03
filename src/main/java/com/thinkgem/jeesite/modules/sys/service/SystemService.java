@@ -78,7 +78,7 @@ public class SystemService extends BaseService {
 				User principal = (User) subject.getPrincipal();
 				if (!principal.getLoginName().equalsIgnoreCase(username)) {
 					UsernamePasswordToken token = new UsernamePasswordToken(
-							username, password);
+							username, password.toCharArray());
 					subject.logout();
 					subject.login(token);
 				}

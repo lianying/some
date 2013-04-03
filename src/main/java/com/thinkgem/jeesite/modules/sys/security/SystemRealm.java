@@ -32,9 +32,11 @@ import com.thinkgem.jeesite.modules.sys.entity.Menu;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.top.entity.TopUser;
 
 /**
  * 系统安全认证实现类
+ * 
  * @author ThinkGem
  * @version 2013-01-15
  */
@@ -46,13 +48,16 @@ public class SystemRealm extends AuthorizingRealm {
 	 * 认证回调函数, 登录时调用
 	 */
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
+	protected AuthenticationInfo doGetAuthenticationInfo(
+			AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		User user = systemService.getUserByLoginName(token.getUsername());
 		if (user != null) {
-			byte[] salt = Encodes.decodeHex(user.getPassword().substring(0,16));
-			return new SimpleAuthenticationInfo(new Principal(user), 
-					user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
+			byte[] salt = Encodes
+					.decodeHex(user.getPassword().substring(0, 16));
+			return new SimpleAuthenticationInfo(new Principal(user), user
+					.getPassword().substring(16), ByteSource.Util.bytes(salt),
+					getName());
 		} else {
 			return null;
 		}
@@ -62,15 +67,16 @@ public class SystemRealm extends AuthorizingRealm {
 	 * 授权查询回调函数, 进行鉴权但缓存中无用户的授权信息时调用
 	 */
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+	protected AuthorizationInfo doGetAuthorizationInfo(
+			PrincipalCollection principals) {
 		Principal principal = (Principal) getAvailablePrincipal(principals);
 		User user = systemService.getUserByLoginName(principal.getLoginName());
 		if (user != null) {
 			UserUtils.putCache("user", user);
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = systemService.findAllMenu();
-			for (Menu menu : list){
-				if (StringUtils.isNotBlank(menu.getPermission())){
+			for (Menu menu : list) {
+				if (StringUtils.isNotBlank(menu.getPermission())) {
 					// 添加基于Permission的权限信息
 					info.addStringPermission(menu.getPermission());
 				}
@@ -82,22 +88,24 @@ public class SystemRealm extends AuthorizingRealm {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 设定密码校验的Hash算法与迭代次数
 	 */
 	@PostConstruct
 	public void initCredentialsMatcher() {
-		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(SystemService.HASH_ALGORITHM);
+		HashedCredentialsMatcher matcher = new HashedCredentialsMatcher(
+				SystemService.HASH_ALGORITHM);
 		matcher.setHashIterations(SystemService.HASH_INTERATIONS);
 		setCredentialsMatcher(matcher);
 	}
-	
+
 	/**
 	 * 清空用户关联权限认证，待下次使用时重新加载
 	 */
 	public void clearCachedAuthorizationInfo(String principal) {
-		SimplePrincipalCollection principals = new SimplePrincipalCollection(principal, getName());
+		SimplePrincipalCollection principals = new SimplePrincipalCollection(
+				principal, getName());
 		clearCachedAuthorizationInfo(principals);
 		UserUtils.removeCache("user");
 	}
@@ -126,7 +134,7 @@ public class SystemRealm extends AuthorizingRealm {
 	public static class Principal implements Serializable {
 
 		private static final long serialVersionUID = 1L;
-		
+
 		private Long id;
 		private String loginName;
 		private String name;
@@ -139,9 +147,13 @@ public class SystemRealm extends AuthorizingRealm {
 			this.id = user.getId();
 			this.loginName = user.getLoginName();
 			this.name = user.getName();
-			this.taobaoUserId = user.getTopUser().getTaobaoUserId();
-			this.taobaoUserNick = user.getTopUser().getTaobaoUserNick();
-			this.accessToken = user.getTopUser().getAccessToken();
+
+			TopUser topUser = user.getTopUser();
+			if (topUser != null) {
+				this.taobaoUserId = user.getTopUser().getTaobaoUserId();
+				this.taobaoUserNick = user.getTopUser().getTaobaoUserNick();
+				this.accessToken = user.getTopUser().getAccessToken();
+			}
 		}
 
 		public Long getId() {
@@ -157,13 +169,12 @@ public class SystemRealm extends AuthorizingRealm {
 		}
 
 		public Map<String, Object> getCacheMap() {
-			if (cacheMap==null){
+			if (cacheMap == null) {
 				cacheMap = new HashMap<String, Object>();
 			}
 			return cacheMap;
 		}
 
-		
 		public Long getTaobaoUserId() {
 			return taobaoUserId;
 		}
