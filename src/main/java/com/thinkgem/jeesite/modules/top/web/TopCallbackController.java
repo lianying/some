@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,7 @@ import com.thinkgem.jeesite.modules.top.utils.TopConifg;
 @RequestMapping(value = "top")
 public class TopCallbackController extends BaseController {
 
+	@Autowired
 	private SystemService systemService;
 	private VasApi vasApi;
 
@@ -48,7 +50,6 @@ public class TopCallbackController extends BaseController {
 		ImprovedTaobaoClient client = new ImprovedTaobaoClient(TopConifg.getServerUrl(),
 				TopConifg.getAppKey(), TopConifg.getAppSecret());
 		vasApi = new VasApi(client);
-		systemService = new SystemService();
 	}
 
 	@ResponseBody
@@ -101,13 +102,15 @@ public class TopCallbackController extends BaseController {
 		user.setName(topUser.getTaobaoUserNick());
 		user.setTopUser(topUser);
 
+		
+		
 		// 查询用户的版本
-		List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(
-				topUser.getTaobaoUserNick(), TopConifg.getArticleCode());
-		for (ArticleUserSubscribe subscribe : vasSubscribe) {
-			subscribe.getItemCode();
-			subscribe.getDeadline();
-		}
+//		List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(
+//				topUser.getTaobaoUserNick(), TopConifg.getArticleCode());
+//		for (ArticleUserSubscribe subscribe : vasSubscribe) {
+//			subscribe.getItemCode();
+//			subscribe.getDeadline();
+//		}
 
 		// 保存
 		systemService.saveUser(user);
