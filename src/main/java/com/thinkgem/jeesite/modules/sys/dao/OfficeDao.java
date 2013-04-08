@@ -34,6 +34,8 @@ public interface OfficeDao extends OfficeDaoCustom, CrudRepository<Office, Long>
 	
 	@Query("from Office where (id=?1 or parent.id=?1 or parentIds like ?2) and delFlag='" + Office.DEL_FLAG_NORMAL + "' order by code")
 	public List<Office> findAllChild(Long parentId, String likeParentIds);
+
+	public Office findByCode(String code);
 }
 
 /**

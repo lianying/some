@@ -48,6 +48,8 @@ public class Role extends BaseEntity {
 	private String name; // 角色名称
 	private String delFlag; // 删除标记（0：正常；1：删除）
 
+	private String itemCode; //top的收费版本
+	
 	private List<User> userList = Lists.newArrayList(); // 拥有用户列表
 	private List<Menu> menuList = Lists.newArrayList(); // 拥有菜单列表
 	private List<Category> categoryList = Lists.newArrayList(); // 拥有内容分类列表
@@ -260,6 +262,14 @@ public class Role extends BaseEntity {
 	@Transient
 	public static boolean isAdmin(Long id){
 		return id != null && id.equals(1L);
+	}
+
+	public String getItemCode() {
+		return itemCode;
+	}
+
+	public void setItemCode(String itemCode) {
+		this.itemCode = itemCode;
 	}
 	
 //	@Transient

@@ -37,6 +37,8 @@ public interface RoleDao extends RoleDaoCustom, CrudRepository<Role, Long> {
 	@Query("select r from Role r, User u where r in elements (u.roleList) and r.delFlag='" + Role.DEL_FLAG_NORMAL +
 			"' and u.delFlag='" + User.DEL_FLAG_NORMAL + "' and u.id=?1 order by r.name")
 	public List<Role> findByUserId(Long userId);
+
+	public Role findByItemCode(String itemCode);
 }
 
 /**

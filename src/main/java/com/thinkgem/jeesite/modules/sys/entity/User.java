@@ -8,6 +8,7 @@ package com.thinkgem.jeesite.modules.sys.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -298,8 +299,8 @@ public class User extends BaseEntity {
 		return id != null && id.equals(1L);
 	}
 
-	@OneToOne
-	@JoinColumn(name = "taobao_user_Nick")
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "taobao_user_nick")
 	public TopUser getTopUser() {
 		return topUser;
 	}

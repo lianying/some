@@ -41,6 +41,10 @@ public class OfficeService extends BaseService {
 		return UserUtils.getOfficeList();
 	}
 	
+	public Office findByCode(String code){
+		return officeDao.findByCode(code);
+	}
+	
 	@Transactional(readOnly = false)
 	public void save(Office office) {
 		office.setParent(this.get(office.getParent().getId()));

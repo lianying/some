@@ -68,6 +68,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">TOP收费项目代码:</label>
+			<div class="controls">
+				<input id="oldItemCode" name="oldItemCode" type="hidden" value="${role.itemCode}">
+				<form:input path="itemCode" htmlEscape="false" maxlength="50" />
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">授权:</label>
 			<div class="controls">
 				<div id="menuTree" style="margin-top:5px;float:left;"></div>

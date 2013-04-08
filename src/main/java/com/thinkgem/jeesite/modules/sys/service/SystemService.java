@@ -205,6 +205,10 @@ public class SystemService extends BaseService {
 		return roleDao.findByName(name);
 	}
 
+	public Role findRoleByItemCode(String itemCode){
+		return roleDao.findByItemCode(itemCode);
+	}
+	
 	public List<Role> findAllRole() {
 		User currentUser = UserUtils.getUser();
 		if (!currentUser.isAdmin()) {

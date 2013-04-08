@@ -21,15 +21,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.taobao.api.ImprovedTaobaoClient;
-import com.taobao.api.VasApi;
-import com.taobao.api.domain.ArticleUserSubscribe;
+import com.google.common.collect.Lists;
 import com.taobao.api.internal.util.WebUtils;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.mapper.JsonMapper;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.AreaService;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.top.entity.TopUser;
 import com.thinkgem.jeesite.modules.top.utils.TopConifg;
@@ -44,12 +45,18 @@ public class TopCallbackController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
-	private VasApi vasApi;
+	@Autowired
+	private OfficeService officeService;
+	@Autowired
+	private AreaService areaService; 
+
+	// private VasApi vasApi;
 
 	public TopCallbackController() {
-		ImprovedTaobaoClient client = new ImprovedTaobaoClient(TopConifg.getServerUrl(),
-				TopConifg.getAppKey(), TopConifg.getAppSecret());
-		vasApi = new VasApi(client);
+		// ImprovedTaobaoClient client = new
+		// ImprovedTaobaoClient(TopConifg.getServerUrl(),
+		// TopConifg.getAppKey(), TopConifg.getAppSecret());
+		// vasApi = new VasApi(client);
 	}
 
 	@ResponseBody
@@ -98,25 +105,30 @@ public class TopCallbackController extends BaseController {
 
 		User user = new User();
 		user.setLoginName(topUser.getTaobaoUserNick());
-		user.setPassword(topUser.getTaobaoUserNick());
+		user.setPassword(SystemService.entryptPassword(topUser.getTaobaoUserNick()));
 		user.setName(topUser.getTaobaoUserNick());
 		user.setTopUser(topUser);
 
-		
-		
 		// 查询用户的版本
-//		List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(
-//				topUser.getTaobaoUserNick(), TopConifg.getArticleCode());
-//		for (ArticleUserSubscribe subscribe : vasSubscribe) {
-//			subscribe.getItemCode();
-//			subscribe.getDeadline();
-//		}
+		// List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(
+		// topUser.getTaobaoUserNick(), TopConifg.getArticleCode());
+		// for (ArticleUserSubscribe subscribe : vasSubscribe) {
+		// subscribe.getItemCode();
+		// subscribe.getDeadline();
+		// }
+		List<Role> roles = Lists.newArrayList();
+		roles.add(systemService.findRoleByItemCode("001"));
 
+		user.setRoleList(roles);
+		user.setOffice(officeService.findByCode("001"));
+
+		user.setArea(areaService.get(1L));
+		
 		// 保存
 		systemService.saveUser(user);
 
 		// 登录
-		systemService.login(user.getLoginName(), user.getPassword());
+		systemService.login(user.getLoginName(), topUser.getTaobaoUserNick());
 
 		return user;
 	}
