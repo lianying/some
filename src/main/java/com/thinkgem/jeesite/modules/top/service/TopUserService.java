@@ -25,8 +25,8 @@ public class TopUserService extends BaseService {
 	@Autowired
 	private TopUserDao userDao;
 	
-	public TopUser get(Long id) {
-		return userDao.findOne(id);
+	public TopUser get(String nick) {
+		return userDao.findOne(nick);
 	}
 
 	@Transactional(readOnly = false)
@@ -34,4 +34,7 @@ public class TopUserService extends BaseService {
 		userDao.save(user);
 	}
 	
+	public boolean exists(String nick) {
+		return userDao.exists(nick);
+	}
 }

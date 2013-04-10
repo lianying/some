@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.modules.top.entity.TopUser;
  * @author lay
  * @version 2013-03-22
  */
-public interface TopUserDao extends TopUserDaoCustom, CrudRepository<TopUser, Long> {
+public interface TopUserDao extends TopUserDaoCustom, CrudRepository<TopUser, String> {
 
 }
 

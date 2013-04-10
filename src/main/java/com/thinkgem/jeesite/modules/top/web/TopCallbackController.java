@@ -33,6 +33,7 @@ import com.thinkgem.jeesite.modules.sys.service.AreaService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.top.entity.TopUser;
+import com.thinkgem.jeesite.modules.top.service.TopUserService;
 import com.thinkgem.jeesite.modules.top.utils.TopConifg;
 
 /**
@@ -48,7 +49,9 @@ public class TopCallbackController extends BaseController {
 	@Autowired
 	private OfficeService officeService;
 	@Autowired
-	private AreaService areaService; 
+	private AreaService areaService;
+	@Autowired
+	private TopUserService topUserService;
 
 	// private VasApi vasApi;
 
@@ -62,18 +65,15 @@ public class TopCallbackController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "callback")
 	public String callback(@RequestParam("code") String code,
-			HttpServletResponse response) throws IOException {
+			HttpServletResponse response) {
 
 		// 生成或更新用户
-		User user;
-		try {
-			user = getUser(code, response);
-		} catch (IOException e) {
-			throw e;
-		}
+		TopUser topUser = getUser(code, response);
+		
 
 		// 登录
-		systemService.login(user.getLoginName(), user.getPassword());
+		systemService.login(topUser.getTaobaoUserNick(),
+				topUser.getTaobaoUserNick());
 
 		// 跳转
 		return "redirect:" + Global.ADMIN_PATH;
@@ -85,8 +85,7 @@ public class TopCallbackController extends BaseController {
 				TopConifg.getAppKey(), TopConifg.getRedirectUrl());
 	}
 
-	private User getUser(String code, HttpServletResponse response)
-			throws IOException {
+	private TopUser getUser(String code, HttpServletResponse response) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("client_id", TopConifg.getAppKey());
 		params.put("response_type", "code");
@@ -95,42 +94,52 @@ public class TopCallbackController extends BaseController {
 		params.put("code", code);
 		params.put("redirect_uri", TopConifg.getRedirectUrl());
 
-		String res = WebUtils.doPost(TopConifg.getOauthCodeUrl(), params, 0, 0);
-		if (StringUtils.isBlank(res)) {
+		String res;
+		try {
+			res = WebUtils.doPost(TopConifg.getOauthCodeUrl(), params, 0, 0);
+			
+			if (StringUtils.isBlank(res)) {
+				return null;
+			}
+		} catch (IOException e) {
 			return null;
 		}
+		
 		// 根据TOP回调的参数给用户赋值
 		TopUser topUser = JsonMapper.getInstance().fromJson(
 				WebUtils.decode(res), TopUser.class);
 
-		User user = new User();
-		user.setLoginName(topUser.getTaobaoUserNick());
-		user.setPassword(SystemService.entryptPassword(topUser.getTaobaoUserNick()));
-		user.setName(topUser.getTaobaoUserNick());
-		user.setTopUser(topUser);
+		if (topUserService.exists(topUser.getTaobaoUserNick())) {
+			topUserService.save(topUser);
+		} else {
 
-		// 查询用户的版本
-		// List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(
-		// topUser.getTaobaoUserNick(), TopConifg.getArticleCode());
-		// for (ArticleUserSubscribe subscribe : vasSubscribe) {
-		// subscribe.getItemCode();
-		// subscribe.getDeadline();
-		// }
-		List<Role> roles = Lists.newArrayList();
-		roles.add(systemService.findRoleByItemCode("001"));
+			User user = new User();
+			user.setLoginName(topUser.getTaobaoUserNick());
+			user.setPassword(SystemService.entryptPassword(topUser
+					.getTaobaoUserNick()));
+			user.setName(topUser.getTaobaoUserNick());
+			user.setTopUser(topUser);
 
-		user.setRoleList(roles);
-		user.setOffice(officeService.findByCode("001"));
+			// 查询用户的版本
+			// List<ArticleUserSubscribe> vasSubscribe = vasApi.getVasSubscribe(
+			// topUser.getTaobaoUserNick(), TopConifg.getArticleCode());
+			// for (ArticleUserSubscribe subscribe : vasSubscribe) {
+			// subscribe.getItemCode();
+			// subscribe.getDeadline();
+			// }
+			List<Role> roles = Lists.newArrayList();
+			roles.add(systemService.findRoleByItemCode("001"));
 
-		user.setArea(areaService.get(1L));
-		
-		// 保存
-		systemService.saveUser(user);
+			user.setRoleList(roles);
+			user.setOffice(officeService.findByCode("001"));
 
-		// 登录
-		systemService.login(user.getLoginName(), topUser.getTaobaoUserNick());
+			user.setArea(areaService.get(1L));
 
-		return user;
+			// 保存
+			systemService.saveUser(user);
+		}
+
+		return topUser;
 	}
 
 }
