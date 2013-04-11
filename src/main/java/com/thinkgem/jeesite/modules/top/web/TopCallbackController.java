@@ -64,16 +64,13 @@ public class TopCallbackController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "callback")
-	public String callback(@RequestParam("code") String code,
-			HttpServletResponse response) {
+	public String callback(@RequestParam("code") String code, HttpServletResponse response) throws Exception {
 
 		// 生成或更新用户
 		TopUser topUser = getUser(code, response);
-		
 
 		// 登录
-		systemService.login(topUser.getTaobaoUserNick(),
-				topUser.getTaobaoUserNick());
+		systemService.login(topUser.getTaobaoUserNick(), topUser.getTaobaoUserNick());
 
 		// 跳转
 		return "redirect:" + Global.ADMIN_PATH;
@@ -81,11 +78,10 @@ public class TopCallbackController extends BaseController {
 
 	@RequestMapping(value = "login")
 	public String sendToLogin() {
-		return String.format("redirect:" + TopConifg.getOauthUrl(),
-				TopConifg.getAppKey(), TopConifg.getRedirectUrl());
+		return String.format("redirect:" + TopConifg.getOauthUrl(), TopConifg.getAppKey(), TopConifg.getRedirectUrl());
 	}
 
-	private TopUser getUser(String code, HttpServletResponse response) {
+	private TopUser getUser(String code, HttpServletResponse response) throws Exception {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("client_id", TopConifg.getAppKey());
 		params.put("response_type", "code");
@@ -95,19 +91,37 @@ public class TopCallbackController extends BaseController {
 		params.put("redirect_uri", TopConifg.getRedirectUrl());
 
 		String res;
+		@SuppressWarnings("rawtypes")
+		Map map;
 		try {
 			res = WebUtils.doPost(TopConifg.getOauthCodeUrl(), params, 0, 0);
-			
+
 			if (StringUtils.isBlank(res)) {
-				return null;
+				throw new Exception("获取token失败，淘宝返回结果为空");
 			}
+
+			map = JsonMapper.getInstance().fromJson(res, Map.class);
 		} catch (IOException e) {
-			return null;
+			res = e.getMessage();
+			map = JsonMapper.getInstance().fromJson(res, Map.class);
+			throw new Exception(map.get("error_description").toString());
 		}
-		
+
 		// 根据TOP回调的参数给用户赋值
-		TopUser topUser = JsonMapper.getInstance().fromJson(
-				WebUtils.decode(res), TopUser.class);
+		// TopUser topUser =
+		// JsonMapper.getInstance().fromJson(WebUtils.decode(res),
+		// TopUser.class);
+		TopUser topUser = new TopUser();
+		topUser.setAccessToken((String) map.get("access_token"));
+		topUser.setExpiresIn((Long) map.get("expires_in"));
+		topUser.setR1ExpiresIn((Long) map.get("r1_expires_in"));
+		topUser.setR2ExpiresIn((Long) map.get("r2_expires_in"));
+		topUser.setW1ExpiresIn((Long) map.get("w1_expires_in"));
+		topUser.setW2ExpiresIn((Long) map.get("w2_expires_in"));
+		topUser.setRefreshToekn((String) map.get("refresh_token"));
+		topUser.setTaobaoUserId((Long) map.get("taobao_user_id"));
+		topUser.setTaobaoUserNick((String) map.get("taobao_user_nick"));
+		topUser.setTokenType((String) map.get("token_type"));
 
 		if (topUserService.exists(topUser.getTaobaoUserNick())) {
 			topUserService.save(topUser);
@@ -115,8 +129,7 @@ public class TopCallbackController extends BaseController {
 
 			User user = new User();
 			user.setLoginName(topUser.getTaobaoUserNick());
-			user.setPassword(SystemService.entryptPassword(topUser
-					.getTaobaoUserNick()));
+			user.setPassword(SystemService.entryptPassword(topUser.getTaobaoUserNick()));
 			user.setName(topUser.getTaobaoUserNick());
 			user.setTopUser(topUser);
 
