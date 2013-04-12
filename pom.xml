@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>com.thinkgem.jeesite</groupId>
 	<artifactId>jeesite</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 	<name>JeeSite</name>
 	<url>http://thinkgem.github.com/jeesite</url>
-    
+
 	<!-- 项目属性 -->
 	<properties>
-	    
+
 		<!-- 依赖库的版本定义 -->
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<spring-data-jpa.version>1.3.0.RELEASE</spring-data-jpa.version>
@@ -32,49 +32,43 @@
 		<dozer.version>5.3.2</dozer.version>
 		<poi.version>3.9</poi.version>
 		<freemarker.version>2.3.19</freemarker.version>
-		<!-- <junit.version>4.11</junit.version>
-		<mockito.version>1.9.5</mockito.version>
-		<powermock.version>1.5</powermock.version> -->
-		
+		<!-- <junit.version>4.11</junit.version> <mockito.version>1.9.5</mockito.version> 
+			<powermock.version>1.5</powermock.version> -->
+
 		<!-- Jdbc -->
 		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
 		<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
 		<jdbc.driver.version>5.1.13</jdbc.driver.version>
-		
-		<!--<jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
-		<jdbc.driver.artifactId>ojdbc14</jdbc.driver.artifactId>
-		<jdbc.driver.version>10.2.0.1.0</jdbc.driver.version>-->
-		
-		<!--<jdbc.driver.groupId>com.h2database</jdbc.driver.groupId>
-		<jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
-		<jdbc.driver.version>1.3.168</jdbc.driver.version>-->
-		
+
+		<!--<jdbc.driver.groupId>com.oracle</jdbc.driver.groupId> <jdbc.driver.artifactId>ojdbc14</jdbc.driver.artifactId> 
+			<jdbc.driver.version>10.2.0.1.0</jdbc.driver.version> -->
+
+		<!--<jdbc.driver.groupId>com.h2database</jdbc.driver.groupId> <jdbc.driver.artifactId>h2</jdbc.driver.artifactId> 
+			<jdbc.driver.version>1.3.168</jdbc.driver.version> -->
+
 		<!-- Plugin -->
 		<jdk.version>1.6</jdk.version>
 		<jetty.version>7.6.9.v20130131</jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
 	</properties>
 
 	<!-- 设定除中央仓库(repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查找. -->
 	<repositories>
-	
-		<!-- 如有Nexus私服, 取消注释并指向正确的服务器地址.
-		<repository>
-			<id>nexus</id>
-			<name>Team Nexus Repository</name>
-			<url>http://localhost:8081/nexus/content/groups/public</url> 
-		</repository>-->
-		
+
+		<!-- 如有Nexus私服, 取消注释并指向正确的服务器地址. <repository> <id>nexus</id> <name>Team 
+			Nexus Repository</name> <url>http://localhost:8081/nexus/content/groups/public</url> 
+			</repository> -->
+
 		<repository>
 			<id>central</id>
 			<name>Central Repository</name>
-			<url>http://repo.maven.apache.org/maven2</url>	
+			<url>http://repo.maven.apache.org/maven2</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+
 		<repository>
 			<id>repo.springsource.org</id>
 			<name>SpringSource Repository</name>
@@ -82,8 +76,8 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-	    </repository>
-		
+		</repository>
+
 		<repository>
 			<id>bonecp-repo</id>
 			<name>BoneCP Repository</name>
@@ -92,21 +86,27 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+
 	</repositories>
-	
+
 	<!-- 依赖项定义 -->
 	<dependencies>
-	
+
+		<dependency>
+			<groupId>net.minidev</groupId>
+			<artifactId>json-smart</artifactId>
+			<version>2.0-RC2</version>
+		</dependency>
+
 		<!-- taobao sdk -->
 		<dependency>
-            <groupId>com.taobao</groupId>
-            <artifactId>taobaosdknotify</artifactId>
-            <version>2.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/taobaosdknotify.jar</systemPath>
-        </dependency>
-	
+			<groupId>com.taobao</groupId>
+			<artifactId>taobaosdknotify</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/taobaosdknotify.jar</systemPath>
+		</dependency>
+
 		<!-- SPRING begin -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -150,7 +150,7 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-			
+
 		<!-- spring orm -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -162,12 +162,12 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- spring data jpa -->
 		<dependency>
-	    	<groupId>org.springframework.data</groupId>
-	    	<artifactId>spring-data-jpa</artifactId>
-	    	<version>${spring-data-jpa.version}</version>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>junit</groupId>
@@ -176,7 +176,7 @@
 			</exclusions>
 		</dependency>
 		<!-- SPRING end -->
-		
+
 		<!-- AOP begin -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -194,12 +194,8 @@
 			<version>2.2.2</version>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>3.3.1</version>
-			<scope>runtime</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>asm</groupId> <artifactId>asm</artifactId> <version>3.3.1</version> 
+			<scope>runtime</scope> </dependency> -->
 		<!-- AOP end -->
 
 		<!-- PERSISTENCE begin -->
@@ -219,33 +215,33 @@
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
-		
+
 		<!-- hibernate search -->
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-search</artifactId>
-		    <version>${hibernate-search.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search</artifactId>
+			<version>${hibernate-search.version}</version>
 		</dependency>
-        <!-- 中文分词 -->
+		<!-- 中文分词 -->
 		<dependency>
-            <groupId>org.wltea.analyzer</groupId>
-            <artifactId>IKAnalyzer</artifactId>
-            <version>2012_u6</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/IKAnalyzer2012_u6.jar</systemPath>
-        </dependency>
+			<groupId>org.wltea.analyzer</groupId>
+			<artifactId>IKAnalyzer</artifactId>
+			<version>2012_u6</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/IKAnalyzer2012_u6.jar</systemPath>
+		</dependency>
 
 		<!-- connection pool -->
-		<dependency>  
-		    <groupId>com.jolbox</groupId>  
-		    <artifactId>bonecp</artifactId>
-		    <version>${bonecp.version}</version>  
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp</artifactId>
+			<version>${bonecp.version}</version>
 			<scope>runtime</scope>
-		</dependency> 
-		<dependency>  
-		    <groupId>com.jolbox</groupId>  
-		    <artifactId>bonecp-provider</artifactId>
-		    <version>${bonecp.version}</version>    
+		</dependency>
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp-provider</artifactId>
+			<version>${bonecp.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -302,7 +298,7 @@
 			<version>${ehcache.version}</version>
 		</dependency>
 		<!-- EHCACHE end -->
-		
+
 		<!-- SECURITY begin -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
@@ -332,7 +328,7 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate-validator.version}</version>
 		</dependency>
-		
+
 		<!-- LOGGING begin -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -354,12 +350,12 @@
 		</dependency>
 		<!-- java.util.logging 实际调用slf4j -->
 		<dependency>
-        	<groupId>org.slf4j</groupId>
-        	<artifactId>jul-to-slf4j</artifactId>
-        	<version>${slf4j.version}</version>
-        	<scope>runtime</scope>
-      	</dependency>
-      	<!-- log4j -->
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -373,7 +369,7 @@
 			<scope>runtime</scope>
 		</dependency>
 		<!-- LOGGING end -->
-		
+
 		<!-- GENERAL UTILS begin -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -408,7 +404,7 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-		
+
 		<!-- jackson json -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -420,98 +416,98 @@
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-		
+
 		<!-- pojo copy -->
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
 			<version>${dozer.version}</version>
 		</dependency>
-       	
-        <!-- freemarker engine -->
+
+		<!-- freemarker engine -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>${freemarker.version}</version>
 		</dependency>
-		
+
 		<!-- email -->
 		<dependency>
-		    <groupId>javax.mail</groupId>
-		    <artifactId>mail</artifactId>
-		    <version>1.4.5</version>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.5</version>
 		</dependency>
 		<dependency>
-		    <groupId>javax.activation</groupId>
-		    <artifactId>activation</artifactId>
-		    <version>1.1.1</version>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1.1</version>
 		</dependency>
-		
+
 		<!-- poi office -->
-	  	<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi</artifactId>
-		    <version>${poi.version}</version>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi-ooxml</artifactId>
-		    <version>${poi.version}</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.poi</groupId>
-		    <artifactId>poi-ooxml-schemas</artifactId>
-		    <version>${poi.version}</version>
-		    <exclusions>
-		    	<exclusion>
-		    		<artifactId>stax-api</artifactId>
-		    		<groupId>stax</groupId>
-		    	</exclusion>
-		    </exclusions>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>${poi.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>stax-api</artifactId>
+					<groupId>stax</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- GENERAL UTILS end -->
-		
+
 		<!-- CKFinder begin -->
 		<dependency>
-		    <groupId>commons-fileupload</groupId>
-		    <artifactId>commons-fileupload</artifactId>
-		    <version>1.2.2</version>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
 		</dependency>
 		<dependency>
-		    <groupId>net.coobird</groupId>
-		    <artifactId>thumbnailator</artifactId>
-		    <version>0.4.2</version>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.2</version>
 		</dependency>
 		<dependency>
-            <groupId>org.apache.tools</groupId>
-            <artifactId>zip</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/apache-ant-zip.jar</systemPath>
-        </dependency>
+			<groupId>org.apache.tools</groupId>
+			<artifactId>zip</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/apache-ant-zip.jar</systemPath>
+		</dependency>
 		<dependency>
-            <groupId>com.ckfinder</groupId>
-            <artifactId>connector</artifactId>
-            <version>2.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/CKFinder-2.3.jar</systemPath>
-        </dependency>
+			<groupId>com.ckfinder</groupId>
+			<artifactId>connector</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/CKFinder-2.3.jar</systemPath>
+		</dependency>
 		<dependency>
-            <groupId>com.ckfinder.connector.plugins</groupId>
-            <artifactId>FileEditor</artifactId>
-            <version>2.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/CKFinderPlugin-FileEditor-2.3.jar</systemPath>
-        </dependency>
+			<groupId>com.ckfinder.connector.plugins</groupId>
+			<artifactId>FileEditor</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/CKFinderPlugin-FileEditor-2.3.jar</systemPath>
+		</dependency>
 		<dependency>
-            <groupId>com.ckfinder.connector.plugins</groupId>
-            <artifactId>ImageResize</artifactId>
-            <version>2.3</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/CKFinderPlugin-ImageResize-2.3.jar</systemPath>
-        </dependency>
+			<groupId>com.ckfinder.connector.plugins</groupId>
+			<artifactId>ImageResize</artifactId>
+			<version>2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/CKFinderPlugin-ImageResize-2.3.jar</systemPath>
+		</dependency>
 		<!-- CKFinder end -->
-		
+
 		<!-- Jetty -->
 		<dependency>
 			<groupId>org.eclipse.jetty.aggregate</groupId>
@@ -525,7 +521,7 @@
 			<version>${jetty.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- TEST begin -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -584,7 +580,7 @@
 					<warName>${project.artifactId}</warName>
 				</configuration>
 			</plugin>
-			
+
 			<!-- Eclipse 插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -613,21 +609,21 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.version}</version> 
+				<version>${jetty.version}</version>
 				<configuration>
 					<webAppConfig>
 						<contextPath>/${project.artifactId}</contextPath>
 					</webAppConfig>
 				</configuration>
 			</plugin>
-			
+
 			<!-- resource插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
 			</plugin>
-			
+
 			<!-- install插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -641,14 +637,14 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
-			
+
 			<!-- ant插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.7</version>
 			</plugin>
-			
+
 			<!-- dependency插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -657,58 +653,65 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
-		<!-- 刷新开发环境数据库 -->			
+		<!-- 刷新开发环境数据库 -->
 		<profile>
 			<id>refresh-db</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-        				<artifactId>maven-antrun-plugin</artifactId>
-        				<version>1.7</version>
-        				<configuration>
-              				<target>
-              				    
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<configuration>
+							<target>
+
 								<property name="sql.type" value="mysql" />
-								<property name="dbunit.datatype" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
-								
-								<!--<property name="sql.type" value="oracle" />
-								<property name="dbunit.datatype" value="org.dbunit.ext.oracle.Oracle10DataTypeFactory" /> -->
-																
+								<property name="dbunit.datatype"
+									value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
+
+								<!--<property name="sql.type" value="oracle" /> <property name="dbunit.datatype" 
+									value="org.dbunit.ext.oracle.Oracle10DataTypeFactory" /> -->
+
 								<property file="src/main/resources/application.properties" />
-                				<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}" onerror="continue">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}" onerror="continue">
 									<classpath refid="maven.test.classpath" />
-									<transaction src="bin/refresh-db/${sql.type}/schema.sql"/>
+									<transaction src="bin/refresh-db/${sql.type}/schema.sql" />
 								</sql>
-								
-								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="maven.test.classpath" />
-								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" password="${jdbc.password}">
+
+								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"
+									classpathref="maven.test.classpath" />
+								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
+									password="${jdbc.password}">
 									<dbconfig>
 										<property name="datatypeFactory" value="${dbunit.datatype}" />
 									</dbconfig>
 									<classpath refid="maven.test.classpath" />
-									<operation type="CLEAN_INSERT" src="bin/refresh-db/init-data.xml" format="flat" transaction="true"/>
+									<operation type="CLEAN_INSERT" src="bin/refresh-db/init-data.xml"
+										format="flat" transaction="true" />
 								</dbunit>
-								
-              				</target>
-            			</configuration>
+
+							</target>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
-	
+
 	<!-- 开发者信息 -->
-	<developers>  
+	<developers>
 		<developer>
 			<id>thinkgem</id>
 			<name>WangZhen</name>
 			<email>thinkgem at 163.com</email>
-			<roles><role>Project lead</role></roles>
-			<timezone>+8</timezone>  
+			<roles>
+				<role>Project lead</role>
+			</roles>
+			<timezone>+8</timezone>
 		</developer>
 	</developers>
-	
+
 </project>

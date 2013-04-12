@@ -15,6 +15,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONUtil;
+import net.minidev.json.JSONValue;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,6 +97,7 @@ public class TopCallbackController extends BaseController {
 		String res;
 		@SuppressWarnings("rawtypes")
 		Map map;
+		JSONObject jsonResp;
 		try {
 			res = WebUtils.doPost(TopConifg.getOauthCodeUrl(), params, 0, 0);
 
@@ -100,6 +105,7 @@ public class TopCallbackController extends BaseController {
 				throw new Exception("获取token失败，淘宝返回结果为空");
 			}
 
+			jsonResp = (JSONObject) JSONValue.parse(res);
 			map = JsonMapper.getInstance().fromJson(res, Map.class);
 		} catch (IOException e) {
 			res = e.getMessage();
